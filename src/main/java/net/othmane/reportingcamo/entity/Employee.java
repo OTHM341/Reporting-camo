@@ -1,0 +1,88 @@
+package net.othmane.reportingcamo.entity;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Index;
+import jakarta.persistence.Table;
+import jakarta.persistence.Version;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+import org.hibernate.annotations.CreationTimestamp;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
+@Entity
+@Table(name = "employee", indexes = {
+    @Index(name = "idx_employee_number", columnList = "employee_number", unique = true),
+    @Index(name = "idx_employee_email", columnList = "email", unique = true),
+    @Index(name = "idx_employee_status", columnList = "status"),
+    @Index(name = "idx_employee_department", columnList = "department")
+})
+@Getter
+@Setter
+@ToString(onlyExplicitlyIncluded = true)
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+public class Employee {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @ToString.Include
+    private Integer id;
+
+    @Version
+    private Long version;
+
+    @Column(name = "employee_number", nullable = false, unique = true, length = 20)
+    @ToString.Include
+    private String employeeNumber;
+
+    @Column(name = "first_name", nullable = false, length = 100)
+    private String firstName;
+
+    @Column(name = "last_name", nullable = false, length = 100)
+    private String lastName;
+
+    @Column(length = 255, unique = true)
+    private String email;
+
+    @Column(length = 20)
+    private String phone;
+
+    @Column(length = 50)
+    private String department;
+
+    @Column(length = 100)
+    private String position;
+
+    @Column(name = "hire_date")
+    private LocalDate hireDate;
+
+    @Enumerated(EnumType.STRING)
+    @Column(length = 20)
+    @Builder.Default
+    private EmployeeStatus status = EmployeeStatus.ACTIVE;
+
+    @CreationTimestamp
+    @Column(name = "created_at", updatable = false)
+    private LocalDateTime createdAt;
+
+    public enum EmployeeStatus {
+        ACTIVE, INACTIVE, ON_LEAVE, TERMINATED
+    }
+
+    public String getFullName() {
+        return ((firstName != null ? firstName : "") + " " + (lastName != null ? lastName : "")).trim();
+    }
+}

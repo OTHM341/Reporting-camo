@@ -1,0 +1,39 @@
+
+# IntelliJ IDEA
+.idea/
+*.iml
+out/
+
+# Maven
+target/
+
+# Logs
+logs/
+*.log
+
+# Environment variables and secrets
+.env
+.env.*
+!.env.example
+application-local.yml
+application-local.properties
+
+# Frontend dependencies and builds
+aviation-frontend/node_modules/
+aviation-frontend/dist/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# AI tools
+.ai/
+
+# Local scripts
+START_SYSTEM.bat
+
+# Temporary and backup files
+*.tmp
+*.bak
+*.orig
+*.swp
